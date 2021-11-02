@@ -1,8 +1,8 @@
 from django.urls import path
 from django.urls.resolvers import URLPattern
-from .views import inicio,login
+from .views import inicio,index
 
 urlpatterns = [
     path('',inicio),
-    path('login',login)
+    path('index',index)
 ]

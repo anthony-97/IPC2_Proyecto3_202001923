@@ -1,6 +1,6 @@
 import builtins
 from os import confstr
-from flask import Flask,request, jsonifyS
+from flask import Flask,request, jsonify
 from flask_cors import CORS
 import xml.etree.ElementTree as xml
 from Factura import Factura
@@ -45,14 +45,14 @@ def procesar():
     print("\nfechas ingresadas"+str(len(fechas)))
     print("\nfacturas ingresadas"+str(len(facturas)))
     llenarF()
-    print(listaFechas)
-    salida()
+    #print(listaFechas)
+    sali = salida()
     webbrowser.open("/home/polares/Downloads/IPC2Proyecto3/autorizaciones.xml")
     obtener_nits("16/01/2021")
     rango_fechas1("15/01/2021","16/01/2021")
     rango_fechas2("15/01/2021","18/01/2021")
     #generarGrafica()
-    return "recibido"
+    return sali
 
 def cargar(ruta):
     obj=xml.parse(ruta)
@@ -235,11 +235,8 @@ def salida():
     archivo.write('autorizaciones.xml')
     a = open('autorizaciones.xml', 'r')
     salida = a.read()
-    return jsonify({"salida":salida})
+    return salida
     
-
-    #Revisar el algoritmo de lectura del xml probandolo con la entrada
-
 
     #Generar grafica
 def generarGrafica1(inicio, final):
@@ -318,7 +315,7 @@ def generarGrafica2(inicio, final):
     plt.show()
 
 #Metodo para pasar a tabla los datos en el frontend
-#@app.route('/obtener_pacientes', methods=['GET'])
+@app.route('/obtener_pacientes', methods=['GET'])
 def obtener_nits(fecha):
     json_nit = []
     for f in fechas:

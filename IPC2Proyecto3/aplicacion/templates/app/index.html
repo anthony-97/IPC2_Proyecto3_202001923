@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>SAT</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="/home/polares/Downloads/IPC2Proyecto3/aplicacion/templates/app/assets/favicon.ico" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="/home/polares/Downloads/IPC2Proyecto3/aplicacion/templates/app/css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="d-flex" id="wrapper">
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <!-- Top navigation-->
+                <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom" >
+                    <div class="container-fluid" style="background-color: purple;">
+                        <img src="mashup-icon.svg" class="navbar-logo-img" alt="">
+                        <h3 style="text-align: center; color:snow;"> SAT </h3>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="color: snow;">Peticiones</a>
+                                    <div class="dropdown-menu dropdown-menu-end" role="menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="#!">Consultar Datos</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#!">Resumen por fecha y NIT</a
+                                        <a class="dropdown-item" href="#!">Resumen por rango de fechas</a>
+                                    </div>
+                                    <li class="nav-item"><a class="nav-link" href="#!" style="color: snow;">Ayuda</a></li>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+                <!-- Page content-->
+                <div class="container-fluid">
+                    <main>
+                        <div class="container-fluid">
+                            <h1 style="text-align: center; color:cornflowerblue;">Superintendencia de Administración Tributaria</h1>
+                            <h3 style="text-align: center; color:purple;">Autorizador de Documentos Tributarios Electrónicos (DTE)</h1>
+                            <h6>Cargar Archivo</h6>
+                            <input type="file" accept="text/plain" onchange="cargarArchivo(event)">
+                            <div id="contenido"></div>
+                        </div>
+                    </main>
+                    <script>
+                        var cargarArchivo = function (event) {
+                            var archivo = event.target;
+                            var reader = new FileReader();
+                            reader.onload = function () {
+                                var contenido = reader.result;
+                                document.getElementById("texto").innerHTML = contenido;
+                                alert("Cargado exitosamente")
+                            };
+                            reader.readAsText(archivo.files[0])
+                        }
+                    </script>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+                <div class="container">
+                    <div class="row justify-content-center">
+                <form action="" method="POST">
+                    {% csrf_token%} 
+                    <div class="row">
+                        <div class="card-body">
+                            <button type="submit" class="btn btn-info" style="text-align: center;">Enviar</button>
+                            <button onclick="" class="btn btn-info">Restablecer</button>
+                        </div>    
+                        <div class="col">
+                            <label for="exampleFormControlInput1" class="form-label">Entrada</label>
+                            <textarea id="texto" type="text" class="form-control" name="cuerpo" cols="30" rows="30"></textarea>
+                        </div>
+                        <div class="col">
+                            <label for="exampleFormControlTextarea1" class="form-label">Salida</label>
+                            <textarea id="texto2" type="text" class="form-control" name="salida" cols="30" rows="30"></textarea>
+                        </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="/home/polares/Downloads/IPC2Proyecto3/aplicacion/templates/app/js/scripts.js"></script>
+    </body>
+</html>
