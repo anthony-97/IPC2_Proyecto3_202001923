@@ -1,0 +1,62 @@
+<html>
+
+<head>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <title>Ejemplo</title>
+</head>
+
+<body>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid">
+                <h1 class="text-center">DTE</h1>
+                <h6>Carga masiva</h6>
+                <input type="file" accept="text/plain" onchange="cargarArchivo(event)">
+                <div id="contenido"></div>
+            </div>
+        </main>
+        <script>
+            var cargarArchivo = function (event) {
+                var archivo = event.target;
+                var reader = new FileReader();
+                reader.onload = function () {
+                    var contenido = reader.result;
+                    document.getElementById("texto").setAttribute("value", contenido)
+                    alert("Cargado exitosamente")
+                };
+                reader.readAsText(archivo.files[0])
+            }
+        </script>
+    <br>
+    <br>
+    <h1 style="text-align: center; color:cornflowerblue;">LOGIN</h1>
+    <br>
+    <br>
+    <form action="" method="POST">
+        {% csrf_token%} 
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-sm-4">
+                <div class="card" style="background-color: D6F2F3;">
+                    <div class="card-body">
+                        <h5 class="card-title" style="text-align: center;">Ingresa a nuestra pagina</h5>
+                        <div class="col-4">
+                            <label for="exampleFormControlInput1" class="form-label">Nombre de Usuario</label>
+                            <input id="texto" type="text" class="form-control" name="nombreUsuario" placeholder="Nombre">
+                        </div>
+                        <div class="col-4">
+                            <label for="exampleFormControlTextarea1" class="form-label">Contraseña</label>
+                            <input type="text" class="form-control" name="contrasena" placeholder="Password">
+                        </div>
+                        <button type="submit" class="btn btn-info">Ingresar</button>
+                        <button onclick="" class="btn btn-info">Ingresar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+
+</html>
