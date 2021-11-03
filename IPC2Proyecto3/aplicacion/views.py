@@ -9,18 +9,36 @@ def inicio(request):
     return HttpResponse("<h3>Vistas</h3>")
 
 def index(request):
-    sali=""
     if request.method == 'POST':
         envio = {
             'name':request.POST['cuerpo'],
         }
         r = requests.post(url+'procesar',json=envio,verify=True)
-        sali=r.text
     return render(request,'app/index.html')
 
-    #return render(request,'app/index.html?salida='+sali)
-    
-#Intento pasarle un parametro que es lo que retorna el proceso para luego tomarlo en la url del index.html y llenar el cuadro de salida.
+def consulta_datos(request):
+    if request.method == 'GET':
+        r = requests.get(url+'ConsultaDatos',verify=True)
+        print(r.text)
+    return render(request,'app/index.html')
+
+def resumen_iva(request):
+    if request.method == 'GET':
+        r = requests.get(url+'ResumenIva',verify=True)
+        print(r.text)
+    return render(request,'app/resumen_iva.html')
+#Para las autorizaciones, cambiar el ResumenIva con ConsultaDatos
+
+def rango_total(request):
+    if request.method == 'GET':
+            r = requests.get(url+'ResumenRango1',verify=True)
+    return render(request,'app/rango_total.html')
+
+def rango_sin_iva(request):
+    if request.method == 'GET':
+            r = requests.get(url+'ResumenRango2',verify=True)
+    return render(request,'app/rango_sin_iva.html')
+
 #para ejectuarlo: python manage.py runserver
 
 # Create your views here.

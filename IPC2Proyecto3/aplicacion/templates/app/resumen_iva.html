@@ -7,9 +7,9 @@
         <meta name="author" content="" />
         <title>SAT</title>
         <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <link rel="icon" type="image/x-icon" href="/home/polares/Downloads/IPC2Proyecto3/aplicacion/templates/app/assets/favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/styles.css" rel="stylesheet" />
+        <link href="/home/polares/Downloads/IPC2Proyecto3/aplicacion/templates/app/css/styles.css" rel="stylesheet" />
     </head>
     <body>
         <div class="d-flex" id="wrapper">
@@ -43,67 +43,61 @@
                         <div class="container-fluid">
                             <h1 style="text-align: center; color:cornflowerblue;">Superintendencia de Administración Tributaria</h1>
                             <h3 style="text-align: center; color:purple;">Autorizador de Documentos Tributarios Electrónicos (DTE)</h1>
-                            <h6>Cargar Archivo</h6>
-                            <input type="file" accept="text/plain" onchange="cargarArchivo(event)">
-                            <div id="contenido"></div>
                         </div>
                     </main>
+                    <div id="layoutSidenav_content">
+                        <main>
+                            <div class="container-fluid">
+                                <h1 class="mt-4">Movimientos del @aqui la fecha</h1>
+                                <div class="table-responsive" id="tabla">
+                      
+                                </div>
+                                <div class="table-responsive" id="tabla2" style="visibility: hidden;">
+                      
+                                </div>
+                            </div>
+                        </main>
                     <script>
-                        var cargarArchivo = function (event) {
-                            var archivo = event.target;
-                            var reader = new FileReader();
-                            reader.onload = function () {
-                                var contenido = reader.result;
-                                document.getElementById("texto").innerHTML = contenido;
-                                alert("Cargado exitosamente")
-                            };
-                            reader.readAsText(archivo.files[0])
-                        }
-
-                        function consultar(){
-                            req.open('GET','http://127.0.0.1:5000/procesar', false);
-                            req.send(null);
-                            var respuesta = JSON.parse(req.response);
-                            document.getElementById("texto2").innerHTML=respuesta;
-                        }
-                    </script>
-                </div>
-                <br>
-                <br>
-                <br>
-                <br>
-                <form action="" method="GET"></form>
-                    <button type="submit" href="{% url 'resumen_iva' %}" class="btn btn-info">Ver NITS</button>
-                    <a class="nav-link" href="{% url 'resumen_iva' %}">Ver NITS</a>
-                    <a class="nav-link" href="{% url 'rango_total' %}">Ver Resumen de totales</a>
-                    <a class="nav-link" href="{% url 'rango_sin_iva' %}">Ver Resumen sin IVA</a>
-                </form>
-                <div class="container">
-                    <div class="row justify-content-center">
-                <form action="" method="POST">
-                    {% csrf_token%} 
-                    <div class="row">
-                        <div class="card-body">
-                            <button type="submit" class="btn btn-info" style="text-align: center;">Enviar</button>
-                            <button onclick="consultar()" class="btn btn-info">Consultar</button>
-                        </div>    
-                        <div class="col">
-                            <label for="exampleFormControlInput1" class="form-label">Entrada</label>
-                            <textarea id="texto" type="text" class="form-control" name="cuerpo" cols="30" rows="30"></textarea>
-                        </div>
-                        <div class="col">
-                            <label for="exampleFormControlTextarea1" class="form-label">Salida</label>
-                            <textarea id="texto2" type="text" class="form-control" name="salida" cols="30" rows="30"></textarea>
-                        </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
+                var antes = `<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Nit Emisor</th>
+            <th>Nit Receptor</th>
+            <th>IVA</th>
+        </tr>
+    </thead>
+    <tbody>`
+                var despues = `</tbody>
+</table>`
+                let xhr = new XMLHttpRequest();
+                var ruta = "http://127.0.0.1:5000/ResumenIva";
+                xhr.open('GET', ruta);
+                xhr.send()
+                xhr.onreadystatechange = (e) => {
+                    var nits = JSON.parse(xhr.responseText);
+                    var cuerpo = "";
+                    var cuerpo2 = "";
+                    for (var i = 0; i<nits.length; i++) {
+                        cuerpo += '<tr>';
+                        cuerpo2 += '<tr>';
+                        cuerpo += '<td>' + nits[i].emisor + '</td>';
+                        cuerpo2 += '<td>' + nits[i].emisor + '</td>';
+                        cuerpo += '<td>' + nits[i].receptor + '</td>';
+                        cuerpo2 += '<td>' + nits[i].receptor + '</td>';
+                        cuerpo += '<td>' + nits[i].iva + '</td>';
+                        cuerpo2 += '<td>' + nits[i].iva + '</td>';
+                        cuerpo += '</tr>';
+                        cuerpo2 += '</tr>';
+                    }
+                    document.getElementById("tabla").innerHTML = antes + cuerpo + despues;
+                    document.getElementById("tabla2").innerHTML = antes + cuerpo2 + despues;
+                }
+            </script>
         </div>
     </div>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
+        <script src="/home/polares/Downloads/IPC2Proyecto3/aplicacion/templates/app/js/scripts.js"></script>
     </body>
 </html>

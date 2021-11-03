@@ -48,11 +48,7 @@ def procesar():
     #print(listaFechas)
     sali = salida()
     webbrowser.open("/home/polares/Downloads/IPC2Proyecto3/autorizaciones.xml")
-    obtener_nits("16/01/2021")
-    rango_fechas1("15/01/2021","16/01/2021")
-    rango_fechas2("15/01/2021","18/01/2021")
-    #generarGrafica()
-    return sali
+    return sali                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
 
 def cargar(ruta):
     obj=xml.parse(ruta)
@@ -126,9 +122,6 @@ def cargar(ruta):
         for t in d.findall("TOTAL"):
             tt=t.text
             tot = tt.replace(" ", "")
-            print("\n\tFecha actual "+f)
-            print("\t Error en la pasada "+str(error)+'\n')
-            print(val + "..........." + iv +".........."+ str(float(val) + float(iv)))
         if round(float(val)+float(iv),2) == float(tot) and not error:
             ca = f.split("/")
             fecha_cod=""
@@ -152,13 +145,6 @@ def cargar(ruta):
         if float(iv) != round(0.12*float(val),2):
             errores_iva+=1
             error = True
-        print("\n\tFecha actual "+f)
-        print("\t Error en la pasada "+str(error)+'\n')
-        print("errores emisor: " + str(errores_emisor))
-        print("errores receptor: " + str(errores_receptor))
-        print("errores iva: " + str(errores_iva))
-        print("errores total: " + str(errores_total))
-        print("errores referencia: " + str(errores_ref))
         if error:
             #Busca la fecha en fechas preliminares y agrega los errores
             for fh in fechas:
@@ -169,21 +155,12 @@ def cargar(ruta):
                     fh.errores[2]+=errores_iva
                     fh.errores[3]+=errores_total
                     fh.errores[4]+=errores_ref
-    #Revisar que los archivos de prueba esten correctos, con las fechas y todo eso.
-
-    def agregarFechas():
-        lfechas=[fechas]
-        for f in fechas:
-            lfechas.append({"fecha":f.fecha})
-        return lfechas
         
 #Llena una lista con objetos de tipo fecha
 def llenarF():
     error=False
     eliminadas=0
     for f in fechas:
-        #Cambiar el 2 parametro para que sean las recibidas en esa fecha, 3 lista de errores, 
-        # 4 correctas (entero), los emisores y receptores estan casi bien creo, leer del doc.
         for r in ref_eliminar:
             if r in f.referencias:
                 contador = 0
@@ -202,12 +179,6 @@ def llenarF():
 
 
 @app.route("/ConsultaDatos", methods=['GET'])
-#Implementar el metodo salida()
-def consulta_datos():
-    datos = request.json(['entrada'])
-    print(str(datos))
-    return datos
-
 def salida():
     root = xml.Element('LISTAAUTORIZACIONES')
     for f in listaFechas:
@@ -236,9 +207,86 @@ def salida():
     a = open('autorizaciones.xml', 'r')
     salida = a.read()
     return salida
-    
 
-    #Generar grafica
+def agregarFechas():
+    lfechas=[]
+    for f in fechas:
+        lfechas.append({"fecha":f.fecha})
+    return jsonify(lfechas)
+
+@app.route('/ResumenIva', methods=['GET'])
+def ResumenIva():
+    salida=obtener_nits("15/01/2021")
+    return salida
+
+def obtener_nits(fecha):
+    json_nit = []
+    for f in fechas:
+        if f.fecha == fecha:
+            for a in f.autorizaciones:
+                lista_prelim = {'emisor':a.nit_emisor, 'receptor':a.nit_receptor, 'iva': a.iva}
+                json_nit.append(lista_prelim)
+    print("--------Tabla de nits------\n")
+    print(json_nit)
+    return jsonify(json_nit)
+
+    '''#Genera la grafica sin IVA.
+def generarGrafica2(fecha):
+    fig, ax = plt.subplots()
+    lista_x=[]
+    lista_y=[]
+    total=0
+    for f in fechas:
+        if f.fecha == fecha:
+            for a in f.autorizaciones:
+                if a.nit_emisor in lista_x:
+                    pass
+                else:
+                    lista_x.append(a.nit_emisor)
+                    
+    fchs=[]
+    ax.scatter(lista_x,lista_y)
+    plt.xticks(lista_x, fchs)
+    plt.yticks(lista_y,lista_y)
+    ax.set_title("Valores sin IVA comprendidos entre el " + inicio + " y el " + final, loc = "center")
+    plt.savefig("graficaSinIVA.png")
+    plt.show()
+    '''
+@app.route("/ResumenRango1", methods=['GET'])
+def general():
+    gen=rango_fechas1("15/01/2021","16/01/2021")
+    return gen
+
+def rango_fechas1(inicio, final):
+    json_total_general = []
+    indice = 0
+    partida = 0
+    llegada = 0
+    for f in fechas:
+        if f.fecha == inicio:
+            partida=indice
+        if f.fecha == final:
+            llegada=indice
+        indice+=1
+    while fechas[partida].fecha != fechas[llegada].fecha:
+        total_general=0.0
+        for a in fechas[partida].autorizaciones:
+            total_general+=float(a.total)
+        lista_prelim = {"fecha":fechas[partida].fecha,"total_general": str(round(total_general,2))}
+        json_total_general.append(lista_prelim)
+        partida+=1
+        if fechas[partida].fecha == fechas[llegada].fecha:
+            total_general=0.0
+            for a in fechas[partida].autorizaciones:
+                total_general+=float(a.total)
+            lista_prelim = {"fecha":fechas[partida].fecha,"total_general": str(round(total_general,2))}
+            json_total_general.append(lista_prelim)
+            break
+    print("--------GENERAL---------\n")
+    print(json_total_general)
+    generarGrafica1(inicio,final)
+    return jsonify(json_total_general)
+
 def generarGrafica1(inicio, final):
     fig, ax = plt.subplots()
     lista_x=[]
@@ -275,6 +323,41 @@ def generarGrafica1(inicio, final):
     ax.set_title("Valores totales (con IVA) comprendidos entre el " + inicio + " y el " + final, loc = "center")
     plt.savefig("graficaTotales.png")
     plt.show()
+
+@app.route("/ResumenRango2", methods=['GET'])
+def sin_iva():
+    sin_IVA=rango_fechas2("15/01/2021","18/01/2021")
+    return sin_IVA
+
+def rango_fechas2(inicio, final):
+    json_sinIVA = []
+    indice = 0
+    partida = 0
+    llegada = 0
+    for f in fechas:
+        if f.fecha == inicio:
+            partida=indice
+        if f.fecha == final:
+            llegada=indice
+        indice+=1
+    while fechas[partida].fecha != fechas[llegada].fecha:
+        total_sinIVA=0.0
+        for a in fechas[partida].autorizaciones:
+            total_sinIVA+=float(a.valor)
+        lista_prelim = {"fecha":fechas[partida].fecha,"sin_iva": str(round(total_sinIVA,2))}
+        json_sinIVA.append(lista_prelim)
+        partida+=1
+        if fechas[partida].fecha == fechas[llegada].fecha:
+            total_sinIVA=0.0
+            for a in fechas[partida].autorizaciones:
+                total_sinIVA+=float(a.valor)
+            lista_prelim = {"fecha":fechas[partida].fecha,"sin_iva": str(round(total_sinIVA,2))}
+            json_sinIVA.append(lista_prelim)
+            break
+    print("--------SIN IVA---------\n")
+    print(json_sinIVA)
+    generarGrafica2(inicio,final)
+    return jsonify(json_sinIVA)
 
 #Genera la grafica sin IVA.
 def generarGrafica2(inicio, final):
@@ -313,87 +396,6 @@ def generarGrafica2(inicio, final):
     ax.set_title("Valores sin IVA comprendidos entre el " + inicio + " y el " + final, loc = "center")
     plt.savefig("graficaSinIVA.png")
     plt.show()
-
-#Metodo para pasar a tabla los datos en el frontend
-@app.route('/obtener_pacientes', methods=['GET'])
-def obtener_nits(fecha):
-    json_nit = []
-    for f in fechas:
-        if f.fecha == fecha:
-            for a in f.autorizaciones:
-                lista_prelim = {'emisor':a.nit_emisor, 'receptor':a.nit_receptor, 'iva': a.iva}
-                jsonStr = json.dumps(lista_prelim)
-                json_nit.append(jsonStr)
-    print("--------Tabla de nits------\n")
-    print(json_nit)
-    return json_nit
-
-#Metodo para pasar a tabla los datos en el frontend valores totales
-def rango_fechas1(inicio, final):
-    json_total_general = []
-    indice = 0
-    partida = 0
-    llegada = 0
-    for f in fechas:
-        if f.fecha == inicio:
-            partida=indice
-        if f.fecha == final:
-            llegada=indice
-        indice+=1
-    while fechas[partida].fecha != fechas[llegada].fecha:
-        total_general=0.0
-        for a in fechas[partida].autorizaciones:
-            total_general+=float(a.total)
-        lista_prelim = {"fecha":fechas[partida].fecha,"total_general": total_general}
-        jsonStr = json.dumps(lista_prelim)
-        json_total_general.append(jsonStr)
-        partida+=1
-        if fechas[partida].fecha == fechas[llegada].fecha:
-            total_general=0.0
-            for a in fechas[partida].autorizaciones:
-                total_general+=float(a.total)
-            lista_prelim = {"fecha":fechas[partida].fecha,"total_general": total_general}
-            jsonStr = json.dumps(lista_prelim)
-            json_total_general.append(jsonStr)
-            break
-
-    print("--------GENERAL---------\n")
-    print(json_total_general)
-    generarGrafica1(inicio,final)
-    return json_total_general
-
-#Metodo para pasar a tabla los datos en el frontend valores sin iva
-def rango_fechas2(inicio, final):
-    json_sinIVA = []
-    indice = 0
-    partida = 0
-    llegada = 0
-    for f in fechas:
-        if f.fecha == inicio:
-            partida=indice
-        if f.fecha == final:
-            llegada=indice
-        indice+=1
-    while fechas[partida].fecha != fechas[llegada].fecha:
-        total_sinIVA=0.0
-        for a in fechas[partida].autorizaciones:
-            total_sinIVA+=float(a.valor)
-        lista_prelim = {"fecha":fechas[partida].fecha,"sin_iva": total_sinIVA}
-        jsonStr = json.dumps(lista_prelim)
-        json_sinIVA.append(jsonStr)
-        partida+=1
-        if fechas[partida].fecha == fechas[llegada].fecha:
-            total_sinIVA=0.0
-            for a in fechas[partida].autorizaciones:
-                total_sinIVA+=float(a.valor)
-            lista_prelim = {"fecha":fechas[partida].fecha,"sin_iva": total_sinIVA}
-            jsonStr = json.dumps(lista_prelim)
-            json_sinIVA.append(jsonStr)
-            break
-    print("--------SIN IVA---------\n")
-    print(json_sinIVA)
-    generarGrafica2(inicio,final)
-    return json_sinIVA
 
 if __name__=="__main__":
     app.run(debug=True)
