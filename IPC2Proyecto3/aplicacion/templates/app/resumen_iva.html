@@ -25,14 +25,7 @@
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="color: snow;">Peticiones</a>
-                                    <div class="dropdown-menu dropdown-menu-end" role="menu" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="#!">Consultar Datos</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#!">Resumen por fecha y NIT</a
-                                        <a class="dropdown-item" href="#!">Resumen por rango de fechas</a>
-                                    </div>
-                                    <li class="nav-item"><a class="nav-link" href="#!" style="color: snow;">Ayuda</a></li>
+                                    <li class="nav-item"><a style="color: snow;" class="dropdown-item" href="{% url 'ayuda' %}">Ayuda</a>
                                 </li>
                             </ul>
                         </div>
@@ -46,14 +39,26 @@
                             <h3 style="text-align: center; color:purple;">Autorizador de Documentos Tributarios Electrónicos (DTE)</h1>
                         </div>
                     </main>
+                    <script>
+                    function crearPDF(){
+                        var pdf = new jsPDF({
+                        orientation:'landscape'
+                        });
+                        pdf.text(10,10,'Movimientos');
+                        pdf.setFontSize(8);
+                        pdf.fromHTML($('#tabla2').get(0),10,10,{'width':180});
+                        pdf.autoPrint();
+                        pdf.save('movimientos_fecha.pdf');
+                    }
+                    </script>
                     <div id="layoutSidenav_content">
                         <main>
                             <div class="container-fluid">
-                                <h1 class="mt-4">Movimientos del @aqui la fecha</h1>
+                                <h1 class="mt-4">Movimientos</h1>
                                 <div class="table-responsive" id="tabla">
                       
                                 </div>
-                                <button onclick="crearPDF()" class="btn btn-info">Generar PDF</button>
+                                <a class="btn btn-primary" type="submit" onclick="crearPDF()">Generar PDF</a>
 
                                 <div class="table-responsive" id="tabla2" style="visibility: hidden;">
                                 
@@ -94,16 +99,6 @@
                     }
                     document.getElementById("tabla").innerHTML = antes + cuerpo + despues;
                     document.getElementById("tabla2").innerHTML = antes + cuerpo2 + despues;
-                }
-                function crearPDF(){
-                    var pdf = new jsPDF({
-                    orientation:'landscape'
-                });
-                    pdf.text(10,10,'Movimientos');
-                    pdf.setFontSize(8);
-                    pdf.fromHTML($('#tabla').get(0),10,10,{'width':180});
-                    pdf.autoPrint();
-                    pdf.save('movimientos_fecha.pdf');
                 }
             </script>
         </div>

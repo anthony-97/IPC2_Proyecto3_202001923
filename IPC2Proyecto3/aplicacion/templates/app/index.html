@@ -28,7 +28,7 @@
                                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="color: snow;">Peticiones</a>
                                     <div class="dropdown-menu dropdown-menu-end" role="menu" aria-labelledby="navbarDropdown">
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="{% url 'agregar_fechas' %}">Resumen de movimientos por Fecha</a>
+                                        <a class="dropdown-item" href="{% url 'agregar_fechas' %}">Resumen de movimientos por fecha</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="{% url 'rango_fechas' %}">Ver Resumen de totales y sin IVA <br> (Rango) </a>                             
                                     </div>
@@ -77,9 +77,6 @@
                 <br>
                 <br>
                 <br>
-                <form action="" method="GET"></form>
-                    <button type="submit" href="{% url 'resumen_iva' %}" class="btn btn-info">Ver NITS</button>
-                </form>
                 <div class="container">
                     <div class="row justify-content-center">
                 <form action="" method="POST">

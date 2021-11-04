@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>SAT - Ayuda</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        {% load static %}
+        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="d-flex" id="wrapper">
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <!-- Top navigation-->
+                <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom" >
+                    <div class="container-fluid" style="background-color: purple;">
+                        <img src="mashup-icon.svg" class="navbar-logo-img" alt="">
+                        <h3 style="text-align: center; color:snow;"> SAT </h3>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+                                <li class="nav-item dropdown">
+                                    <div class="dropdown-menu dropdown-menu-end" role="menu" aria-labelledby="navbarDropdown">                            
+                                    </div>
+                                    <li class="nav-item"><a style="color: snow;" class="dropdown-item" href="{% url 'index' %}">Volver al inicio</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+                <!-- Page content-->
+                <div class="container-fluid">
+                    <main>
+                        <div class="container-fluid">
+                            <h1 style="text-align: center; color:cornflowerblue;">Superintendencia de Administración Tributaria</h1>
+                            <h3 style="text-align: center; color:purple;">Autorizador de Documentos Tributarios Electrónicos (DTE)</h3>
+                            <h4 style="text-align: center; color:purple;">Información del estudiante</h4>
+                            <h5 style="text-align: center; color:gray;">Nombre: Anthony Alexander Aquino Santiago</h5>
+                            <h5 style="text-align: center; color:gray;">Carnet:202001923</h5>
+                            <h5 style="text-align: center; color:gray;">Curso: Introduccion a la Programación y Computación 2<br><br></h5>
+                        </div>
+                        <div class="container-fluid">
+                            <h1 style="text-align: center; color:cornflowerblue;">Ayuda</h1>
+                            <p>Esta es una página que funciona como autorizadora de Documentos Tributarios Electrónicos (DTE)</p>
+                            <h3 style="text-align: center; color:purple">Página de inicio</h3>
+                            <p> Aquí puedes cargar un archivo con extensión xml, seleccionándolo en el explorador de 
+                                archivos que se desplegará en donde estarán varios DTE's.
+                                El nombre de tu archivo aparecerá al lado derecho del botón de carga.
+                                Al presionar el botón enviar, analizaremos el archivo y decidiremos cuántos DTE's aceptamos. <br>
+                                Presiona el botón consultar para visualizar la salida que genera la página.
+                                La salida se mostrará en el cuadro de texto marcado con la etiqueta salida.
+                                <br><br>Puedes visualizar distintos tipos de resúmenes generados en la parte superior derecha de la página.
+                            </p>
+                            <h3 style="text-align: center; color:purple">Resumen de movimientos por fecha</h3>
+                            <p> Para acceder a este resumen, presiona el botón desplegable llamado Peticiones, y luego presiona
+                                Resumen de movimientos por fecha.
+                                Aquí podrás visualizar las fechas en las cuales se autorizaron DTE's.
+                                Para generar el resumen de alguna fecha, escribe alguna de las que se aprecian en la página. <br>
+                                Es importante que la escribas con el siguiente formato: DD/MM/AAAA. Se te avisará que tu solicitud fue realizada.
+                                <br><br>Presiona el boton: ver resumen de la fecha para visualizar el resumen.
+                            </p>
+                            <h3 style="text-align: center; color:purple">Ver resumen de totales y sin IVA</h3>
+                            <p> Para acceder a este resumen, presiona el botón desplegable llamado Peticiones, y luego presiona
+                                Ver resumen de totales y sin IVA.
+                                Aquí podrás visualizar las fechas en las cuales se autorizaron DTE's.
+                                Verás dos opciones, la de generar resumen de totales (con IVA) y la de generar 
+                                el resumen con los totales sin IVA.
+                                Llena el formulario que quieras utilizar, o si quieres puedes llenar los dos formularios
+                                para luego visualizar cada resumen.
+                                Para generar el resumen de algun rango de fechas, escríbe alguna en la caja de texto inicio,
+                                para partir de esa fecha a generar el resumen.
+                                A continuación escribe otra fecha en la caja de texto final, para definir la fecha final del resumen.
+                                Es importante que las escribas en el siguiente formato: DD/MM/AAAA.
+                                Se te avisará que tu solicitud fue realizada.
+                                <br><br> 
+                                Presiona el botón: ver resumen de totales para visualizar el resumen de totales (con IVA).
+                                <br>
+                                Presiona el botón: ver resumen de totales sin IVA para visualizar el resumen de totales sin IVA.
+                            </p>
+                        </div>
+                    </main>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+    </div>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        {% load static %}
+        <script src="{% static 'js/scripts.js' %}"></script>
+    </body>
+</html>

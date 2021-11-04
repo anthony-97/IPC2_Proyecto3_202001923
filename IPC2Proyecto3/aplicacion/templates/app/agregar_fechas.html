@@ -25,14 +25,12 @@
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="color: snow;">Peticiones</a>
                                     <div class="dropdown-menu dropdown-menu-end" role="menu" aria-labelledby="navbarDropdown">
                                         <a class="dropdown-item" href="#!">Consultar Datos</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#!">Resumen por fecha y NIT</a
-                                        <a class="dropdown-item" href="#!">Resumen por rango de fechas</a>
+                                        
                                     </div>
-                                    <li class="nav-item"><a class="nav-link" href="#!" style="color: snow;">Ayuda</a></li>
+                                    <li class="nav-item"><a style="color: snow;" class="dropdown-item" href="{% url 'ayuda' %}">Ayuda</a>
                                 </li>
                             </ul>
                         </div>
