@@ -23,6 +23,7 @@ listaFechas=[]
 #Referencias duplicadas a eliminar
 ref_eliminar=[]
 
+f1, f2, fI, fF, fechaT ="", "", "", "", ""
 CORS(app)
 
 @app.route("/")
@@ -45,10 +46,9 @@ def procesar():
     print("\nfechas ingresadas"+str(len(fechas)))
     print("\nfacturas ingresadas"+str(len(facturas)))
     llenarF()
-    #print(listaFechas)
-    sali = salida()
-    webbrowser.open("/home/polares/Downloads/IPC2Proyecto3/autorizaciones.xml")
-    return sali                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+    sali=salida()
+    return sali
+    #print(listaFechas)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
 
 def cargar(ruta):
     obj=xml.parse(ruta)
@@ -206,17 +206,27 @@ def salida():
     archivo.write('autorizaciones.xml')
     a = open('autorizaciones.xml', 'r')
     salida = a.read()
-    return salida
+    return jsonify({"salida":salida})
 
+@app.route('/agregar_fechas', methods=['GET'])
 def agregarFechas():
     lfechas=[]
     for f in fechas:
         lfechas.append({"fecha":f.fecha})
     return jsonify(lfechas)
 
+@app.route('/consultar_fecha', methods=['GET'])
+def consultar_fecha():
+    global fechaT
+    sal = obtener_nits(fechaT)
+    return sal
+
 @app.route('/ResumenIva', methods=['GET'])
 def ResumenIva():
-    salida=obtener_nits("15/01/2021")
+    fecha = request.args.get("fecha")
+    global fechaT
+    fechaT = fecha
+    salida=obtener_nits(fecha)
     return salida
 
 def obtener_nits(fecha):
@@ -230,31 +240,20 @@ def obtener_nits(fecha):
     print(json_nit)
     return jsonify(json_nit)
 
-    '''#Genera la grafica sin IVA.
-def generarGrafica2(fecha):
-    fig, ax = plt.subplots()
-    lista_x=[]
-    lista_y=[]
-    total=0
-    for f in fechas:
-        if f.fecha == fecha:
-            for a in f.autorizaciones:
-                if a.nit_emisor in lista_x:
-                    pass
-                else:
-                    lista_x.append(a.nit_emisor)
-                    
-    fchs=[]
-    ax.scatter(lista_x,lista_y)
-    plt.xticks(lista_x, fchs)
-    plt.yticks(lista_y,lista_y)
-    ax.set_title("Valores sin IVA comprendidos entre el " + inicio + " y el " + final, loc = "center")
-    plt.savefig("graficaSinIVA.png")
-    plt.show()
-    '''
+@app.route("/rango1", methods=['GET'])
+def rango1():
+    global f1, f2
+    gen=rango_fechas1(f1,f2)
+    return gen
+     
 @app.route("/ResumenRango1", methods=['GET'])
 def general():
-    gen=rango_fechas1("15/01/2021","16/01/2021")
+    fecha1 = request.args.get("fecha1")
+    fecha2 = request.args.get("fecha2")
+    global f1, f2
+    f1 = fecha1
+    f2 = fecha2
+    gen=rango_fechas1(fecha1,fecha2)
     return gen
 
 def rango_fechas1(inicio, final):
@@ -321,12 +320,23 @@ def generarGrafica1(inicio, final):
     plt.xticks(lista_x, fchs)
     plt.yticks(lista_y,lista_y)
     ax.set_title("Valores totales (con IVA) comprendidos entre el " + inicio + " y el " + final, loc = "center")
-    plt.savefig("graficaTotales.png")
+    plt.savefig("aplicacion/static/graficaTotales.png")
     plt.show()
+
+@app.route("/rango2", methods=['GET'])
+def rango2():
+    global fI, fF
+    gen=rango_fechas2(fI,fF)
+    return gen
 
 @app.route("/ResumenRango2", methods=['GET'])
 def sin_iva():
-    sin_IVA=rango_fechas2("15/01/2021","18/01/2021")
+    fechaI = request.args.get("fechaI")
+    fechaF = request.args.get("fechaF")
+    global fI, fF
+    fI = fechaI
+    fF = fechaF
+    sin_IVA=rango_fechas2(fechaI,fechaF)
     return sin_IVA
 
 def rango_fechas2(inicio, final):
@@ -394,7 +404,7 @@ def generarGrafica2(inicio, final):
     plt.xticks(lista_x, fchs)
     plt.yticks(lista_y,lista_y)
     ax.set_title("Valores sin IVA comprendidos entre el " + inicio + " y el " + final, loc = "center")
-    plt.savefig("graficaSinIVA.png")
+    plt.savefig("aplicacion/static/graficaSinIVA.png")
     plt.show()
 
 if __name__=="__main__":

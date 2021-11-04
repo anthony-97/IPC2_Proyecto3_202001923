@@ -8,7 +8,6 @@
         <title>SAT</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="/home/polares/Downloads/IPC2Proyecto3/aplicacion/templates/app/assets/favicon.ico" />
-        <!-- Core theme CSS (includes Bootstrap)-->        
         {% load static %}
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     </head>
@@ -19,7 +18,8 @@
                 <!-- Top navigation-->
                 <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom" >
                     <div class="container-fluid" style="background-color: purple;">
-                        <img src="mashup-icon.svg" class="navbar-logo-img" alt="">
+                        {% load static %}
+                        <img src="{% static 'mashup-icon.svg' %}" class="navbar-logo-img" alt="">
                         <h3 style="text-align: center; color:snow;"> SAT </h3>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -49,31 +49,56 @@
                     <div id="layoutSidenav_content">
                         <main>
                             <div class="container-fluid">
-                                <h1 class="mt-4">Resumen de datos (sin iva) fecha</h1>
+                                <h1 class="mt-4">Fechas en donde fueron aprobados DTE's</h1>
                                 <div class="table-responsive" id="tabla">
                       
                                 </div>
-                                {% load static %}
-                                <img src="{% static 'graficaSinIVA.png' %}">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-4"></div>
+                                        <div class="col-sm-4">
+                                            <div class="card" style="background-color: D6F2F3;">
+                                                <div class="card-body">
+                                                    <h5 class="card-title" style="text-align: center;">Escribe la fecha a consultar</h5>
+                                                    <div class="mb-3">
+                                                        <label for="exampleFormControlInput1" class="form-label">Fecha</label>
+                                                        <input type="text" class="form-control" id="fecha" placeholder="Fecha">
+                                                    </div>
+                                                    <button onclick="r1()" class="btn btn-info">Enviar solicitud</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <a class="dropdown-item" href="{% url 'resumen_iva' %}">Ver Resumen de la fecha</a>
                                 <div class="table-responsive" id="tabla2" style="visibility: hidden;">
-                      
+                    
                                 </div>
-
-                    </div>
+                            </div>
                         </main>
+                    <script>
+                function r1() {
+                    const fecha = document.getElementById("fecha").value;
+                    const url = 'http://127.0.0.1:5000/';
+                    const ruta = url + "ResumenIva?fecha=" + fecha;
+                    fetch(ruta)
+                        .then((resp) => resp.json())
+                    alert("Solicitud enviada")
+                    }
+
+                    </script>
                     <script>
                 var antes = `<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
     <thead>
         <tr>
             <th>Fecha</th>
-            <th>Total del día (sin IVA)</th>
         </tr>
     </thead>
     <tbody>`
                 var despues = `</tbody>
 </table>`
                 let xhr = new XMLHttpRequest();
-                var ruta = "http://127.0.0.1:5000/rango2";
+                var ruta = "http://127.0.0.1:5000/agregar_fechas";
                 xhr.open('GET', ruta);
                 xhr.send()
                 xhr.onreadystatechange = (e) => {
@@ -85,8 +110,6 @@
                         cuerpo2 += '<tr>';
                         cuerpo += '<td>' + fechas[i].fecha + '</td>';
                         cuerpo2 += '<td>' + fechas[i].fecha + '</td>';
-                        cuerpo += '<td>' + fechas[i].sin_iva + '</td>';
-                        cuerpo2 += '<td>' + fechas[i].sin_iva + '</td>';
                         cuerpo += '</tr>';
                         cuerpo2 += '</tr>';
                     }

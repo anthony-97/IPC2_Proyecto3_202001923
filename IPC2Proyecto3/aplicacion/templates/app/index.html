@@ -9,7 +9,8 @@
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/styles.css" rel="stylesheet" />
+        {% load static %}
+        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     </head>
     <body>
         <div class="d-flex" id="wrapper">
@@ -26,12 +27,12 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="color: snow;">Peticiones</a>
                                     <div class="dropdown-menu dropdown-menu-end" role="menu" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="#!">Consultar Datos</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#!">Resumen por fecha y NIT</a
-                                        <a class="dropdown-item" href="#!">Resumen por rango de fechas</a>
+                                        <a class="dropdown-item" href="{% url 'agregar_fechas' %}">Resumen de movimientos por Fecha</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="{% url 'rango_fechas' %}">Ver Resumen de totales y sin IVA <br> (Rango) </a>                             
                                     </div>
-                                    <li class="nav-item"><a class="nav-link" href="#!" style="color: snow;">Ayuda</a></li>
+                                    <li class="nav-item"><a style="color: snow;" class="dropdown-item" href="{% url 'ayuda' %}">Ayuda</a>
                                 </li>
                             </ul>
                         </div>
@@ -61,10 +62,14 @@
                         }
 
                         function consultar(){
-                            req.open('GET','http://127.0.0.1:5000/procesar', false);
-                            req.send(null);
-                            var respuesta = JSON.parse(req.response);
-                            document.getElementById("texto2").innerHTML=respuesta;
+                            let xhr = new XMLHttpRequest();
+                            var ruta = "http://127.0.0.1:5000/ConsultaDatos";
+                            xhr.open('GET', ruta);
+                            xhr.send()
+                            xhr.onreadystatechange = (e) => {
+                                var sal = JSON.parse(xhr.responseText);
+                                document.getElementById("texto2").innerHTML = sal.salida
+                            }
                         }
                     </script>
                 </div>
@@ -74,9 +79,6 @@
                 <br>
                 <form action="" method="GET"></form>
                     <button type="submit" href="{% url 'resumen_iva' %}" class="btn btn-info">Ver NITS</button>
-                    <a class="nav-link" href="{% url 'resumen_iva' %}">Ver NITS</a>
-                    <a class="nav-link" href="{% url 'rango_total' %}">Ver Resumen de totales</a>
-                    <a class="nav-link" href="{% url 'rango_sin_iva' %}">Ver Resumen sin IVA</a>
                 </form>
                 <div class="container">
                     <div class="row justify-content-center">
@@ -84,8 +86,8 @@
                     {% csrf_token%} 
                     <div class="row">
                         <div class="card-body">
-                            <button type="submit" class="btn btn-info" style="text-align: center;">Enviar</button>
-                            <button onclick="consultar()" class="btn btn-info">Consultar</button>
+                            <button type="submit" type="button" class="btn btn-info" style="text-align: center;">Enviar</button>
+                            <button onclick="consultar()" type="button" class="btn btn-info">Consultar</button>
                         </div>    
                         <div class="col">
                             <label for="exampleFormControlInput1" class="form-label">Entrada</label>
@@ -104,6 +106,7 @@
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
+        {% load static %}
+        <script src="{% static 'js/scripts.js' %}"></script>
     </body>
 </html>

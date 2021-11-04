@@ -117,7 +117,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-    '/home/polares/Downloads/IPC2Proyecto3/aplicacion/templates/app/css/styles.css',
+    '/home/polares/Downloads/IPC2Proyecto3/aplicacion/static',
 ]
 
 STATIC_ROOT = "/var/www/example.com/static/"
